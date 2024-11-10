@@ -1,10 +1,9 @@
 package com.gennisateam.cheatertavern.LoginByJWT.Config;
 
-import com.gennisateam.cheatertavern.LoginByJWT.Service.UserDetailsServiceImpl;
+import com.gennisateam.cheatertavern.LoginByJWT.Service.UserAuthService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -20,14 +19,15 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final UserDetailsServiceImpl userDetailsService;
+    private final UserAuthService userAuthService;
 
-    public SecurityConfig(UserDetailsServiceImpl userDetailsService) {
-        this.userDetailsService = userDetailsService;
+    public SecurityConfig(UserAuthService userDetailsService) {
+        this.userAuthService = userDetailsService;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        // 定义安全过滤规则的核心接口(例如：/api/login/auth)【登录、注册】
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/login/auth").permitAll()
@@ -39,19 +39,22 @@ public class SecurityConfig {
     }
 
     @Bean
+    // 用于用户认证
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setUserDetailsService(userAuthService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
 
     @Bean
+    // 对密码进行加密和验证
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
+    // 用于协调认证过程
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }

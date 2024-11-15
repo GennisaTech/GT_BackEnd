@@ -51,7 +51,7 @@ public class SecurityConfig {
     @Bean
     // 对密码进行加密和验证
     public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();  // 这个实例可以在整个应用中共享
     }
 
     @Bean

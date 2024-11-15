@@ -32,9 +32,8 @@ public class UserAccounts {
     public String getPassword() {
         return password;
     }
-    public void setPassword(String plaintextPassword) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        this.password = encoder.encode(plaintextPassword);
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     // Getter 和 Setter 方法

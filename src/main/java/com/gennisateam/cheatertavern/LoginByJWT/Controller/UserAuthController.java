@@ -5,6 +5,7 @@ import com.gennisateam.cheatertavern.LoginByJWT.Entity.UserAccounts;
 import com.gennisateam.cheatertavern.LoginByJWT.Utils.JWTUtils;
 import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +46,7 @@ public class UserAuthController {
         if (foundUser == null) {
             response.put("code", "ACCOUNT_NOT_FOUND");
             response.put("errMsg", "Account does not exist");
-            return ResponseEntity.status(404).body(response);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
 
         // 密码错误的情况，返回401 Unauthorized
@@ -55,6 +56,7 @@ public class UserAuthController {
             return ResponseEntity.status(401).body(response);
         }
 
+        // 使用JWT生成token并返回
         String token = jwtUtil.generateToken(foundUser.getUsername());
         response.put("code", "SUCCESS");
         response.put("data", Map.of("token", token));
@@ -79,15 +81,23 @@ public class UserAuthController {
     public ResponseEntity<Map<String, Object>> register(@RequestBody UserAccounts newUser) {
         Map<String, Object> response = new HashMap<>();
 
+        // 输入帐号为空
+        if (newUser.getUsername() == null || newUser.getUsername().isEmpty()) {
+            response.put("code", "ACCOUNT_EMPTY");
+            response.put("errMsg", "Account cannot be empty");
+            return ResponseEntity.badRequest().body(response);
+        }
+
         // 检查账号是否已存在
         if (userAuthDAO.findByUsername(newUser.getUsername()).isPresent()) {
             response.put("code", "ACCOUNT_EXISTS");
             response.put("errMsg", "Account already exists");
-            return ResponseEntity.status(409).body(response); // 409 Conflict
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response); // Conflict
         }
 
         // 加密密码
-        newUser.setPassword(newUser.getPassword());
+        String encryptedPassword = passwordEncoder.encode(newUser.getPassword());
+        newUser.setPassword(encryptedPassword);
 
         // 生成唯一的 player_id
         newUser.setId();

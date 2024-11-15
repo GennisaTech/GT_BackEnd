@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -22,6 +23,11 @@ public class UserAuthController {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    /**
+     * 登录接口
+     * @param user 请求体user
+     * @return 返回cookies及请求体
+     */
     @PostMapping("/auth")
     public ResponseEntity<Map<String, Object>> login(@RequestBody UserAccounts user) {
         Map<String, Object> response = new HashMap<>();
@@ -63,4 +69,39 @@ public class UserAuthController {
                 .header("Set-Cookie", cookie.toString())
                 .body(response);
     }
+
+    /**
+     * 注册接口
+     * @param newUser 新用户请求体
+     * @return 注册信息
+     */
+    @PostMapping("/register")
+    public ResponseEntity<Map<String, Object>> register(@RequestBody UserAccounts newUser) {
+        Map<String, Object> response = new HashMap<>();
+
+        // 检查账号是否已存在
+        if (userAuthDAO.findByUsername(newUser.getUsername()).isPresent()) {
+            response.put("code", "ACCOUNT_EXISTS");
+            response.put("errMsg", "Account already exists");
+            return ResponseEntity.status(409).body(response); // 409 Conflict
+        }
+
+        // 加密密码
+        newUser.setPassword(newUser.getPassword());
+
+        // 生成唯一的 player_id
+        newUser.setId();
+
+        // 设置注册时间为当前时间
+        newUser.setRegistrationTime();
+
+        // 保存新用户到数据库
+        UserAccounts savedUser = userAuthDAO.save(newUser);
+
+        response.put("code", "SUCCESS");
+        response.put("data", Map.of("playerId", savedUser.getId())); // 使用id作为player_id
+
+        return ResponseEntity.status(201).body(response); // 201 Created
+    }
+
 }

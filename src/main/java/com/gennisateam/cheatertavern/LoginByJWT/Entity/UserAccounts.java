@@ -5,13 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 @Data
 @Entity
 @Table(name = "user_accounts")
 public class UserAccounts {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "player_id",unique = true,nullable = false)
+    private String id;  // 这个字段即为数据库中的player_id 类似与UUID
 
     @Column(name = "account")
     private String username;
@@ -19,13 +22,44 @@ public class UserAccounts {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "registration_time")
+    private LocalDateTime registrationTime; // 使用 LocalDateTime 类型
+
     protected UserAccounts() {
 
     }
 
+    public String getPassword() {
+        return password;
+    }
     public void setPassword(String plaintextPassword) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         this.password = encoder.encode(plaintextPassword);
+    }
+
+    // Getter 和 Setter 方法
+    public String getId() {
+        return id; // id即为player_id
+    }
+
+    public void setId() {
+        this.id = UUID.randomUUID().toString();
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public LocalDateTime getRegistrationTime() {
+        return registrationTime;
+    }
+
+    public void setRegistrationTime() {
+        this.registrationTime = LocalDateTime.now();
     }
     // 其他属性、构造函数等
 }

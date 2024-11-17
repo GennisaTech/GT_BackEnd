@@ -3,6 +3,7 @@ package com.gennisateam.cheatertavern.LoginByJWT.Controller;
 import com.gennisateam.cheatertavern.LoginByJWT.DAO.UserAuthDAO;
 import com.gennisateam.cheatertavern.LoginByJWT.Entity.UserAccounts;
 import com.gennisateam.cheatertavern.LoginByJWT.Utils.JWTUtils;
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
@@ -17,11 +18,11 @@ import java.util.*;
 @RequestMapping("/api/user")
 public class UserAuthController {
 
-    @Autowired
+    @Resource
     private UserAuthDAO userAuthDAO;
-    @Autowired
+    @Resource
     private JWTUtils jwtUtil;
-    @Autowired
+    @Resource
     private BCryptPasswordEncoder passwordEncoder;
 
     /**

@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/login")
+@RequestMapping("/api/user")
 public class UserAuthController {
 
     @Autowired
@@ -29,7 +29,7 @@ public class UserAuthController {
      * @param user 请求体user
      * @return 返回cookies及请求体
      */
-    @PostMapping("/auth")
+    @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody UserAccounts user) {
         Map<String, Object> response = new HashMap<>();
 

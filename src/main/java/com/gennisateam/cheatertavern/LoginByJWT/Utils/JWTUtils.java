@@ -7,7 +7,7 @@ import java.util.*;
 
 @Component
 public class JWTUtils {
-    private String SECRET_KEY = "GennisaTeam"; // 更改为安全的密钥
+    private String SECRET_KEY = "GennisaTeamForCheaterTavernGennisaTeamForCheaterTavernGennisaTeamForCheaterTavern"; // 更改为安全的密钥
     private int EXPIRATION_TIME = 1000 * 60 * 60; // 1小时
 
     public String generateToken(String username) {

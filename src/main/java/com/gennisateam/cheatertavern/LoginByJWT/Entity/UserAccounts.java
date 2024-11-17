@@ -3,6 +3,7 @@ package com.gennisateam.cheatertavern.LoginByJWT.Entity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Setter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
@@ -16,9 +17,11 @@ public class UserAccounts {
     @Column(name = "player_id",unique = true,nullable = false)
     private String id;  // 这个字段即为数据库中的player_id 类似与UUID
 
+    @Setter
     @Column(name = "account")
     private String username;
 
+    @Setter
     @Column(name = "password")
     private String password;
 
@@ -32,9 +35,6 @@ public class UserAccounts {
     public String getPassword() {
         return password;
     }
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     // Getter 和 Setter 方法
     public String getId() {
@@ -47,10 +47,6 @@ public class UserAccounts {
 
     public String getUsername() {
         return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public LocalDateTime getRegistrationTime() {

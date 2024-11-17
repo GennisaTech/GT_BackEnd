@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface UserAuthDAO extends JpaRepository<UserAccounts, Long> {
+public interface UserAuthDAO extends JpaRepository<UserAccounts, String> {
     Optional<UserAccounts> findByUsername(String username);
 }

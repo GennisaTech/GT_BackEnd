@@ -13,6 +13,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @ComponentScan(basePackages = "com.gennisateam.cheatertavern.LoginByJWT")
@@ -30,8 +32,8 @@ public class SecurityConfig {
         // 定义安全过滤规则的核心接口(例如：/api/login/auth)【登录、注册】
         http.csrf(AbstractHttpConfigurer::disable) // 禁用 CSRF 保护
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/login/auth").permitAll() // 允许所有人访问登录接口
-                        .requestMatchers("/api/login/register").permitAll() // 允许所有人访问注册接口
+                        .requestMatchers("/api/user/login").permitAll() // 允许所有人访问登录接口
+                        .requestMatchers("/api/user/register").permitAll() // 允许所有人访问注册接口
                         .anyRequest().authenticated() // 其他请求需要认证
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // 设置为无状态会话
@@ -58,5 +60,20 @@ public class SecurityConfig {
     // 用于协调认证过程
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("https://*.gennisa.tech")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowedHeaders("*")
+                        .allowCredentials(true)
+                        .maxAge(3600);
+            }
+        };
     }
 }

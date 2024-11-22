@@ -3,8 +3,9 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.GennisaTeam</groupId>
-    <artifactId>CheaterTavernLogin</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>CheaterTavern</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
     <name>CheaterTavern</name>
     <description>CheaterTavern</description>
     <properties>

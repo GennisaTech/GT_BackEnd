@@ -3,7 +3,6 @@ package com.gennisateam.cheatertavern.LoginByJWT.Service;
 import com.gennisateam.cheatertavern.LoginByJWT.DAO.UserAuthDAO;
 import com.gennisateam.cheatertavern.LoginByJWT.Entity.UserAccounts;
 import jakarta.annotation.Resource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

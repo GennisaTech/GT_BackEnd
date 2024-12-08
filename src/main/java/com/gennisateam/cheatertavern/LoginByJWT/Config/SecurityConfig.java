@@ -68,12 +68,12 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("*")
+                        .allowedOrigins("https://*.gennisa.tech")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("*")
                         .allowCredentials(true)
                         .maxAge(3600);
-//                .allowedOrigins("https://*.gennisa.tech")
+
             }
         };
     }

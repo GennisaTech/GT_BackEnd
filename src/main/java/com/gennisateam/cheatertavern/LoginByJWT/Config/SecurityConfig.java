@@ -68,7 +68,7 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("https://*.gennisa.tech")
+                        .allowedOrigins("https://bar.gennisa.tech", "https://gennisa.tech", "https://www.gennisa.tech") // 允许具体的子域名
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("*")
                         .allowCredentials(true)

@@ -46,7 +46,7 @@ public class UserAuthController {
         UserAccounts foundUser = userAuthDAO.findByUsername(user.getUsername()).orElse(null);
 
         // 账号不存在的情况，返回404 Not Found
-        if (Objects.isNull(foundUser)) {
+        if (foundUser == null) {
             response.put("code", "ACCOUNT_NOT_FOUND");
             response.put("errMsg", "Account does not exist");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
